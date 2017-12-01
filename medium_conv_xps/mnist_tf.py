@@ -27,7 +27,7 @@ import tensorflow as tf
 
 flags = tf.flags
 logging = tf.logging
-savepath ="saves/save.chk"
+savepath ="saves_mnist/save.chk"
 flags.DEFINE_string(
     "model", "medium",
     "A type of model. Possible options are: small, medium, large.")
@@ -346,7 +346,7 @@ if __name__ == "__main__":
             
             m = MNISTModel( config=config,x_=x_,y_=y_,k_=k_)
           
-          with tf.variable_scope("Model", reuse=1):
+          with tf.variable_scope("Model", reuse=True):
               with tf.Session() as session:
                 session.run(tf.global_variables_initializer())
                 for i in range(config.max_max_epoch):

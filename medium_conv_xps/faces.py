@@ -19,6 +19,7 @@ from __future__ import absolute_import
 from __future__ import division
 from __future__ import print_function
 import time
+import os
 
 
 import numpy as np
@@ -27,7 +28,7 @@ import tensorflow as tf
 
 flags = tf.flags
 logging = tf.logging
-savepath ="saves/save.chk"
+savepath = "saves_faces/save.chk"
 flags.DEFINE_string(
     "model", "small",
     "A type of model. Possible options are: small, medium, large.")
@@ -131,7 +132,7 @@ class FACESInput(object):
 def get_faces_data():
     import pickle as pkl
     try :
-        f= open("data_faces.pkl","r+")
+        f= open("data_faces.pkl","rb+")
         data = pkl.load(f)
         f.close()
         print("loaded")
@@ -352,7 +353,7 @@ def get_config():
 
 if __name__ == "__main__":
     
-    import os
+    #import os
     
     if  0 and os.uname()[1]=="anguille" :
         print("copy files ?")
@@ -423,7 +424,7 @@ if __name__ == "__main__":
             
             m = FACESModel( config=config,x_=x_,y_=y_,k_=k_)
           
-          with tf.variable_scope("Model", reuse=1):
+          with tf.variable_scope("Model", reuse=True):
               with tf.Session() as session:
                 session.run(tf.global_variables_initializer())
                 for i in range(config.max_max_epoch):
@@ -490,7 +491,7 @@ if __name__ == "__main__":
                     print("Epoch: %d Valid Perplexity: %.3f for Last Kernel" % (i + 1, valid_perplexity_2))
                     
                 
-                    saver.restore(session, savepath )
+                    saver.restore(session, savepath)
                     
                     variables_names =[v.name for v in tf.trainable_variables()]
                     values = session.run(variables_names)
