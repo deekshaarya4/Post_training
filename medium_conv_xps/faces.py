@@ -257,7 +257,7 @@ class SmallConfig(object):
   hidden_size = [32]
   hidden_size_conn = [512]
   max_epoch = 4
-  max_max_epoch = 200
+  max_max_epoch = 20000
   keep_prob = 1.0
   lr_decay = 0.5
   batch_size = 50
@@ -290,7 +290,7 @@ class LargeConfig(object):
   hidden_size = [32,64]
   hidden_size_conn = [1024]
   max_epoch = 4
-  max_max_epoch = 200
+  max_max_epoch = 20000
   keep_prob = .5
   lr_decay = 0.9
   batch_size = 100
