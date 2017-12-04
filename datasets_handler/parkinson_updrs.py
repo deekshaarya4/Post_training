@@ -23,7 +23,7 @@ class ParkinsonUPDRSInputs(object):
 
     def _load_dataset(self):
         print("Loading parkinson data set")
-        f = np.loadtxt('parkinsons_updrs.data.txt', delimiter=",", skiprows=2
+        f = np.loadtxt('datasets_handler/parkinsons_updrs.data.txt', delimiter=",", skiprows=2
                        )[:, 3:]
         x_train = f[:, 2:]
         y_train = f[:, self.xp_dim:1 + self.xp_dim]
