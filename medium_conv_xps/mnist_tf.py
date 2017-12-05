@@ -29,7 +29,7 @@ flags = tf.flags
 logging = tf.logging
 savepath ="saves_mnist/save.chk"
 flags.DEFINE_string(
-    "model", "medium",
+    "model", "small",
     "A type of model. Possible options are: small, medium, large.")
 
 FLAGS = flags.FLAGS
