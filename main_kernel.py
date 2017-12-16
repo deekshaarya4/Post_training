@@ -208,9 +208,24 @@ else:
         for i, v in enumerate(var_list):
             session.run(v.assign(value_l[i]))
 
-        # Compute error before post-training
         train_cost_init = session.run(krr, feed_dict=total_feed_dict)
         test_error_init = session.run(error_krr, feed_dict=test_feed_dict)
+
+        print('Init: '+str(test_error_init))
+
+        for batch in range(epochs_last_kernel):
+            batch_x, batch_y = dataset.get_next_batch()
+            session.run(train_step, feed_dict={X: batch_x, y_: batch_y,
+                                               keep_proba: 1.})
+
+        # Compute error before post-training
+        train_cost_init2 = session.run(krr, feed_dict=total_feed_dict)
+        test_error_init2 = session.run(error_krr, feed_dict=test_feed_dict)
+
+        print('Init2: '+str(test_error_init2))
+
+        for i, v in enumerate(var_list):
+            session.run(v.assign(value_l[i]))
 
         # Run epochs_post-training steps with post_training
         for batch in range(epochs_last_kernel):
@@ -222,6 +237,7 @@ else:
         train_cost_pt = session.run(krr, feed_dict=total_feed_dict)
         test_error_pt = session.run(error_krr, feed_dict=test_feed_dict)
 
+        print('PT: '+str(test_error_pt))
         # Algorithm ---- Exact Solution
 
         # Re-load the weights for the begining of the trajectory
@@ -229,21 +245,23 @@ else:
             session.run(v.assign(value_l[i]))
 
         # DEBUG
-        test_error_init2 = session.run(error_krr, feed_dict=test_feed_dict)
-        assert test_error_init2 == test_error_init
+        # test_error_init2 = session.run(error_krr, feed_dict=test_feed_dict)
+        # print(test_error_init2)
+        # assert test_error_init2 == test_error_init
 
         # Compute the optimal value of the last layer with close form solution
         fd = final_weights.eval(session=session, feed_dict={
-            X: total_x, y_: total_y, keep_proba: 1.}) 
+            X: total_x, y_: total_y, keep_proba: 1.})
         session.run(W_3.assign(fd))
 
         # Compute train/test errors and store it
         train_cost_opt = session.run(krr, feed_dict=total_feed_dict)
         test_error_opt = session.run(error_krr, feed_dict=test_feed_dict)
+        print('Opt: '+str(test_error_opt))
 
-        tab_error += [(iteration_init, test_error_init, test_error_pt,
+        tab_error += [(iteration_init, test_error_init, test_error_init2, test_error_pt,
                        test_error_opt)]
-        print("Iteration {}: {:.3f}, {:.3f}, {:.3f}".format(*tab_error[-1]))
+        print("Iteration {}: {:.3f}, {:.3f}, {:.3f}, {:.3f}".format(*tab_error[-1]))
 
     session.close()
     print("All done, time elapsed", time.time() - start_time)
