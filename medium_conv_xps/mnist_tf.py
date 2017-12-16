@@ -29,7 +29,7 @@ flags = tf.flags
 logging = tf.logging
 savepath ="saves_mnist/save.chk"
 flags.DEFINE_string(
-    "model", "small",
+    "model", "large",
     "A type of model. Possible options are: small, medium, large.")
 
 FLAGS = flags.FLAGS
@@ -184,7 +184,7 @@ class SmallConfig(object):
   keep_prob = 1.0
   lr_decay = 0.7
   batch_size = 50
-  lambda_reg = 1e-1
+  lambda_reg = 1e-2
   name = "error_small_config"
 
 
@@ -214,10 +214,10 @@ class LargeConfig(object):
   hidden_size_conn = [1024]
   max_epoch = 4
   max_max_epoch = 50
-  keep_prob = .5
-  lr_decay = 0.9
+  keep_prob = 1.0
+  lr_decay = 0.7
   batch_size = 100
-  lambda_reg = 1
+  lambda_reg = 1e-2
   name = "error_large_config"
 
 
@@ -236,7 +236,7 @@ def run_epoch(session, model, input,x_,y_,k_, eval_op=None, verbose=False,train=
   if train and  eval_op is not None:
     fetches["eval_op"] = eval_op
 
-  number_of_step = 10 if train else 1
+  number_of_step = 100 if train else 1
   
   for step in range(1,number_of_step+1):
         if eval_op is not None and train:

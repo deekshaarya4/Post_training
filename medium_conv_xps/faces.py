@@ -30,7 +30,7 @@ flags = tf.flags
 logging = tf.logging
 savepath = "saves_faces/save.chk"
 flags.DEFINE_string(
-    "model", "small",
+    "model", "large",
     "A type of model. Possible options are: small, medium, large.")
 
 FLAGS = flags.FLAGS
@@ -290,11 +290,11 @@ class LargeConfig(object):
   hidden_size = [32,64]
   hidden_size_conn = [1024]
   max_epoch = 4
-  max_max_epoch = 25
+  max_max_epoch = 200
   keep_prob = .5
   lr_decay = 0.9
   batch_size = 100
-  lambda_reg = 10
+  lambda_reg = 1e-2
   name = "error_faces_large_config"
 
 
