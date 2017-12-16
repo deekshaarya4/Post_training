@@ -209,7 +209,7 @@ class LearningConfig(object):
   lr_decay = (1 / 1.15)
   batch_size = 20
   vocab_size = 10000
-  lambda_reg = 1e-2
+  lambda_reg = 1e-3
 
 
 
